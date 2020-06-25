@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="weatherapp">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather app</title>
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.12/angular-material.min.css">
+  <link rel="stylesheet" href="app.css" />
+  <style>
+    body {
+      background-color: #ebebe0;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+
+    }
+
+    .history-panel {
+      /* background-color: red; */
+      width: 350px;
+
+      border: 1px solid #adad85;
+      position: fixed;
+      right: 0;
+      top: 0;
+      color: #5c5c3d;
+      height: 800px;
+      display: none;
+    }
+
+    .md-show-clear-button {
+      display: block;
+      margin: auto;
+      width: 400px;
+    }
+
+    /* .md-sidenav-left
+        {
+          
+          background-color: rgb(235, 235, 224);
+          height: 800px;
+          position: fixed;
+          right: 0;
+        
+        } */
+    /* .md-sidenav-left, md-sidenav 
+            {
+              right: 0 !important;
+              left: unset;
+            } */
+    #btn {
+      background-color: transparent;
+      color: #5c5c3d;
+
+    }
+
+    md-sidenav.md-closed.md-locked-open-add,
+    md-sidenav.md-locked-open,
+    md-sidenav.md-locked-open-add,
+    md-sidenav.md-locked-open-remove,
+    md-sidenav.md-locked-open-remove.md-closed,
+    md-sidenav.md-locked-open.md-closed,
+    md-sidenav.md-locked-open.md-closed.md-sidenav-left,
+    md-sidenav.md-locked-open.md-closed.md-sidenav-right {
+      position: fixed;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container" ng-cloak>
+    <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="right">
+      <div ng-controller="HistoryController">
+        <md-toolbar class="md-theme-indigo">
+          <h1 style="background-color: #ebebe0; color: black;" class="md-toolbar-tools">History</h1>
+        </md-toolbar>
+  
+        <md-list>
+          <md-list-item style="flex:0;" ng-repeat="his in history track by $index" ng-click="showSelHistory(his)">
+              {{ his.date |date: 'HH:mm yyyy-MM-dd '}} {{'   '+his.city.city+','+his.city.country}}
+          </md-list-item>
+        </md-list>
+      </div>
+    </md-sidenav>
+
+    <md-content ng-controller="SearchController" flex layout-padding style="background-color:#ebebe0 ;">
+      <div class="search-panel" >
+        <md-button id="btn" class="md-raised md-primary" ng-click="toggleSidenav()">HISTORY</md-button>
+        <form ng-submit="$event.preventDefault()" name="searchForm">
+          <div layout-gt-sm="row" style="font-size: 26px;text-align: center; margin-top: 50px;" class="md-padding">
+            <md-autocomplete flex required md-input-minlength="2" md-input-maxlength="18"
+              md-selected-item="selectedItem" md-selected-item-change="selectedItemChange(item)"
+              md-search-text="searchText" md-items="item in getMatches(searchText)" md-item-text="item.city"
+              md-clear-button="true" md-floating-label="SEARCH">
+              <md-item-template>
+                <span md-highlight-text="searchText">{{item.city+','+item.country}}</span>
+              </md-item-template>
+              <div ng-messages="searchForm.autocompleteField.$error" ng-if="searchForm.autocompleteField.$touched">
+                <div ng-message="required">You <b>must</b> have a favorite state.</div>
+                <div ng-message="md-require-match">Please select an existing state.</div>
+                <div ng-message="minlength">Your entry is not long enough.</div>
+                <div ng-message="maxlength">Your entry is too long.</div>
+              </div>
+            </md-autocomplete>
+          </div>
+        </form>
+        <div ng-if="selectedHistory" style="font-size: 28px;text-align: center;margin-top: 130px;">
+            {{selectedHistory.wheather.celcius+'°C'}}
+            <div>{{selectedHistory.city.city+' '+selectedHistory.city.country}}</div>
+        </div>
+        
+    </md-content>
+  </div>
+
+  <!--  Angular.js Libraries -->
+  <script src="https://code.angularjs.org/1.4.7/angular.min.js"></script>
+  <script src="https://code.angularjs.org/1.4.7/angular-animate.js"></script>
+  <script src="https://code.angularjs.org/1.4.7/angular-aria.min.js"></script>
+  <script src="https://code.angularjs.org/1.4.7/angular-messages.min.js"></script>
+  <!-- Angular Material Library -->
+ <!--  <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.12/angular-material.min.js"></script> -->
+  <script src="./dist/bundle.js"></script>
+
+</body>
+
+</html>

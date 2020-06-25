@@ -1,0 +1,35 @@
+.container{
+    display: flex;
+    flex-direction: row;
+}
+
+.container > .search{
+    flex: 7;
+}
+
+.container > .history{
+    flex: 3;
+}   
+
+input[type=text]{
+    border:none;
+    font-size: 24px;
+    padding: 10px;
+    border-bottom: 1px solid lightgray;
+    text-align: center;
+}
+
+input[type=text]:focus{
+    outline: none;
+}
+
+
+ul li{
+    list-style: none;
+}
+
+li{
+    background: lightgray;
+    padding: 10px;
+}
+
